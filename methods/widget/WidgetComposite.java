@@ -5,10 +5,11 @@ import java.util.Map;
 
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
+import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
+import org.powerbot.game.client.Client;
 
 /**
  * @author Timer
@@ -92,7 +93,7 @@ public class WidgetComposite {
 	}
 
 	private synchronized static void update(final Record record) {
-		final int master_index = record.bot.getClient().getGUIRSInterfaceIndex() * record.bot.multipliers.GLOBAL_GUIINTERFACEINDEX;
+		final int master_index = record.client.getGUIRSInterfaceIndex() * record.multipliers.GLOBAL_GUIINTERFACEINDEX;
 		if (master_index != record.index_widget) {
 			record.index_map = -1;
 			record.index_compass = -1;
@@ -116,10 +117,12 @@ public class WidgetComposite {
 	private static final class Record {
 		private int index_widget, index_map, index_compass;
 		private final int[] indices_tabs = new int[17];
-		private final Bot bot;
+		private final Client client;
+		private final Multipliers multipliers;
 
 		private Record() {
-			bot = Context.resolve();
+			client = Context.client();
+			multipliers = Context.multipliers();
 			index_widget = -1;
 			index_map = -1;
 			index_compass = -1;

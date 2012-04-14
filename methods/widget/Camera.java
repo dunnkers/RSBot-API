@@ -8,38 +8,44 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
+import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
+import org.powerbot.game.client.Client;
 
 /**
  * @author Timer
  */
 public class Camera {
 	public static int getX() {
-		final Bot bot = Context.resolve();
-		return bot.getClient().getCamPosX() * bot.multipliers.GLOBAL_CAMPOSX;
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		return client.getCamPosX() * multipliers.GLOBAL_CAMPOSX;
 	}
 
 	public static int getY() {
-		final Bot bot = Context.resolve();
-		return bot.getClient().getCamPosY() * bot.multipliers.GLOBAL_CAMPOSY;
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		return client.getCamPosY() * multipliers.GLOBAL_CAMPOSY;
 	}
 
 	public static int getZ() {
-		final Bot bot = Context.resolve();
-		return bot.getClient().getCamPosZ() * bot.multipliers.GLOBAL_CAMPOSZ;
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		return client.getCamPosZ() * multipliers.GLOBAL_CAMPOSZ;
 	}
 
 	public static int getYaw() {
-		final Bot bot = Context.resolve();
-		return (int) ((bot.getClient().getCameraYaw() * bot.multipliers.GLOBAL_CAMERAYAW) / 45.51);
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		return (int) ((client.getCameraYaw() * multipliers.GLOBAL_CAMERAYAW) / 45.51);
 	}
 
 	public static int getPitch() {
-		final Bot bot = Context.resolve();
-		return (int) (((bot.getClient().getCameraPitch() * bot.multipliers.GLOBAL_CAMERAPITCH) - 1024) / 20.48);
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		return (int) (((client.getCameraPitch() * multipliers.GLOBAL_CAMERAPITCH) - 1024) / 20.48);
 	}
 
 	public synchronized static boolean setPitch(final boolean up) {

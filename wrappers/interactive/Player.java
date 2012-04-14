@@ -24,7 +24,7 @@ public class Player extends Character {
 
 	public Player(final Object p) {
 		this.p = new SoftReference<Object>(p);
-		this.multipliers = Context.resolve().multipliers;
+		this.multipliers = Context.multipliers();
 	}
 
 	public int getLevel() {

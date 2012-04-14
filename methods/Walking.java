@@ -5,13 +5,14 @@ import java.awt.Point;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.api.wrappers.map.LocalPath;
 import org.powerbot.game.api.wrappers.map.TilePath;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
+import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSGroundDataBlocks;
 import org.powerbot.game.client.RSGroundDataInts;
 import org.powerbot.game.client.RSGroundDataX;
@@ -29,9 +30,10 @@ public class Walking {
 	private static final int WIDGET_RUN_ENERGY = 6;
 
 	public static Tile getDestination() {
-		final Bot bot = Context.resolve();
-		final int lx = (bot.getClient().getDestX() * bot.multipliers.GLOBAL_DESTX) / 4;
-		final int ly = (bot.getClient().getDestY() * bot.multipliers.GLOBAL_DESTY) / 4;
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		final int lx = (client.getDestX() * multipliers.GLOBAL_DESTX) / 4;
+		final int ly = (client.getDestY() * multipliers.GLOBAL_DESTY) / 4;
 		if (lx == -1 || ly == -1) {
 			return new Tile(-1, -1, -1);
 		}
@@ -47,9 +49,10 @@ public class Walking {
 	 * @return The <code>Tile</code> of the offset location (different than map base!).
 	 */
 	public static Tile getCollisionOffset(final int plane) {
-		final Bot bot = Context.resolve();
-		final Object groundDataInts = ((RSGroundDataInts) ((Object[]) ((RSInfoGroundData) bot.getClient().getRSGroundInfo()).getRSInfoGroundData())[plane]).getRSGroundDataInts();
-		return new Tile(((RSGroundDataX) groundDataInts).getRSGroundDataX() * bot.multipliers.GROUNDDATA_X, ((RSGroundDataY) groundDataInts).getRSGroundDataY() * bot.multipliers.GROUNDDATA_Y, plane);
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		final Object groundDataInts = ((RSGroundDataInts) ((Object[]) ((RSInfoGroundData) client.getRSGroundInfo()).getRSInfoGroundData())[plane]).getRSGroundDataInts();
+		return new Tile(((RSGroundDataX) groundDataInts).getRSGroundDataX() * multipliers.GROUNDDATA_X, ((RSGroundDataY) groundDataInts).getRSGroundDataY() * multipliers.GROUNDDATA_Y, plane);
 	}
 
 	/**
@@ -57,7 +60,7 @@ public class Walking {
 	 * @return The collision flags of the current map block.
 	 */
 	public static int[][] getCollisionFlags(final int plane) {
-		return (int[][]) ((RSGroundDataBlocks) ((Object[]) ((RSInfoGroundData) Context.resolve().getClient().getRSGroundInfo()).getRSInfoGroundData())[plane]).getRSGroundDataBlocks();
+		return (int[][]) ((RSGroundDataBlocks) ((Object[]) ((RSInfoGroundData) Context.client().getRSGroundInfo()).getRSInfoGroundData())[plane]).getRSGroundDataBlocks();
 	}
 
 	public static void setRun(final boolean enabled) {

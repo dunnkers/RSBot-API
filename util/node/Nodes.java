@@ -27,7 +27,7 @@ public class Nodes {
 			if (buckets == null) {
 				return null;
 			}
-			final Multipliers multipliers = Context.resolve().multipliers;
+			final Multipliers multipliers = Context.multipliers();
 			final long multiplier = (((long) multipliers.NODE_ID) << 32) + ((multipliers.NODE_ID_p2 & 0xFFFFFFFFL));
 			final Node n = buckets[(int) (id & buckets.length - 1)];
 			for (Node node = n.getPrevious(); node != n; node = node.getPrevious()) {

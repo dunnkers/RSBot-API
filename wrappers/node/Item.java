@@ -33,7 +33,7 @@ public class Item implements Identifiable {
 	}
 
 	public Item(final RSItem item) {
-		final Multipliers multipliers = Context.resolve().multipliers;
+		final Multipliers multipliers = Context.multipliers();
 		final Object data = item.getData();
 		id = ((RSItemID) ((RSItemInts) data).getRSItemInts()).getRSItemID() * multipliers.ITEM_ID;
 		stack = ((RSItemStackSize) ((RSItemInts) data).getRSItemInts()).getRSItemStackSize() * multipliers.ITEM_STACKSIZE;
@@ -66,7 +66,7 @@ public class Item implements Identifiable {
 	}
 
 	public ItemDefinition getDefinition() {
-		final Object itemDefLoaderTable = Context.resolve().getClient().getRSItemDefLoader();
+		final Object itemDefLoaderTable = Context.client().getRSItemDefLoader();
 		final Object itemDefLoaderCache = ((RSItemDefLoaderCache) itemDefLoaderTable).getRSItemDefLoaderCache();
 		final Object itemDefLoader = ((CacheTable) itemDefLoaderCache).getCacheTable();
 		final Node ref = Nodes.lookup(itemDefLoader, id);

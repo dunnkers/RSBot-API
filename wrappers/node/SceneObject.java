@@ -77,7 +77,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	}
 
 	public int getId() {
-		return Context.resolve().getClient().getRSObjectID(object);
+		return Context.client().getRSObjectID(object);
 	}
 
 	public Type getType() {
@@ -103,7 +103,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	}
 
 	public LocationDefinition getDefinition() {
-		final Object object = ((RSInfoRSObjectDefLoaders) Context.resolve().getClient().getRSGroundInfo()).getRSInfoRSObjectDefLoaders();
+		final Object object = ((RSInfoRSObjectDefLoaders) Context.client().getRSGroundInfo()).getRSInfoRSObjectDefLoaders();
 		final Object objectDefLoader = ((CacheTable) ((RSObjectDefLoaderCache) object).getRSObjectDefLoaderCache()).getCacheTable();
 		final Node ref = Nodes.lookup(objectDefLoader, getId());
 		if (ref != null && ref instanceof Reference) {
@@ -122,7 +122,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 
 	public CapturedModel getModel() {
 		if (object != null) {
-			Model model = Context.resolve().getClient().getRSObjectModel(object);
+			Model model = Context.client().getRSObjectModel(object);
 			if (model == null) {
 				model = ModelCapture.modelCache.get(object);
 			}

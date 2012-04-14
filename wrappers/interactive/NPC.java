@@ -21,7 +21,7 @@ public class NPC extends Character {
 
 	public NPC(final Object n) {
 		this.n = new SoftReference<Object>(n);
-		this.multipliers = Context.resolve().multipliers;
+		this.multipliers = Context.multipliers();
 	}
 
 	public int getLevel() {

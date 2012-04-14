@@ -7,6 +7,6 @@ import org.powerbot.game.bot.Context;
  */
 public class Magic {
 	public static boolean isSpellSelected() {
-		return Context.resolve().getClient().isSpellSelected();
+		return Context.client().isSpellSelected();
 	}
 }

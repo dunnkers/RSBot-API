@@ -5,11 +5,11 @@ import java.awt.Point;
 
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.widget.WidgetComposite;
+import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSGroundBytes_Bytes;
@@ -63,7 +63,7 @@ public class Calculations {
 	 * @return The height of the given tile on the provided plane.
 	 */
 	public static int calculateTileHeight(final int x, final int y, int plane) {
-		final Client client = Context.resolve().getClient();
+		final Client client = Context.client();
 		final int x1 = x >> 9;
 		final int y1 = y >> 9;
 		final byte[][][] settings = (byte[][][]) ((RSGroundBytes_Bytes) (((RSInfoGroundBytes) client.getRSGroundInfo()).getRSInfoGroundBytes())).getRSGroundBytes_Bytes();
@@ -111,9 +111,9 @@ public class Calculations {
 	 * @return The <code>Point</code> of the given coordinates on screen.
 	 */
 	public static Point worldToScreen(final int x, final int y, final int z) {
-		final Bot bot = Context.resolve();
-		final Toolkit toolkit = bot.toolkit;
-		final Viewport viewport = bot.viewport;
+		final Context bot = Context.get();
+		final Toolkit toolkit = bot.getToolkit();
+		final Viewport viewport = bot.getViewport();
 		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
 		final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
 		final float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * y + viewport.yZ * z));
@@ -134,8 +134,8 @@ public class Calculations {
 	 * @return <code>Point</code> within map; otherwise <tt>new Point(-1, -1)</tt>.
 	 */
 	public static Point worldToMap(double x, double y) {
-		final Bot bot = Context.resolve();
-		final Client client = bot.getClient();
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
 		final Player local = Players.getLocal();
 		x -= Game.getBaseX();
 		y -= Game.getBaseY();
@@ -153,17 +153,17 @@ public class Calculations {
 
 		if (mmDist * mmDist >= actDistSq) {
 			int angle = 0x3fff & (int) client.getMinimapAngle();
-			final boolean setting4 = client.getMinimapSetting() * bot.multipliers.GLOBAL_MINIMAPSETTING == 4;
+			final boolean setting4 = client.getMinimapSetting() * multipliers.GLOBAL_MINIMAPSETTING == 4;
 
 			if (!setting4) {
-				angle = 0x3fff & (client.getMinimapOffset() * bot.multipliers.GLOBAL_MINIMAPOFFSET) + (int) client.getMinimapAngle();
+				angle = 0x3fff & (client.getMinimapOffset() * multipliers.GLOBAL_MINIMAPOFFSET) + (int) client.getMinimapAngle();
 			}
 
 			int cs = Calculations.SIN_TABLE[angle];
 			int cc = Calculations.COS_TABLE[angle];
 
 			if (!setting4) {
-				final int fact = 0x100 + (client.getMinimapScale() * bot.multipliers.GLOBAL_MINIMAPSCALE);
+				final int fact = 0x100 + (client.getMinimapScale() * multipliers.GLOBAL_MINIMAPSCALE);
 				cs = 0x100 * cs / fact;
 				cc = 0x100 * cc / fact;
 			}
@@ -192,7 +192,7 @@ public class Calculations {
 	 * @return <tt>true</tt> if the point is on the screen; otherwise <tt>false</tt>.
 	 */
 	public static boolean isOnScreen(final int x, final int y) {
-		final Canvas canvas = Context.resolve().getCanvas();
+		final Canvas canvas = Context.client().getCanvas();
 		return x >= 0 && y >= 0 && x < canvas.getWidth() && y < canvas.getHeight();
 	}
 

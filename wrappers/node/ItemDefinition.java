@@ -30,7 +30,7 @@ public class ItemDefinition implements Identifiable {
 
 	public int getId() {
 		try {
-			return ((RSItemDefID) ((RSItemDefInts) definition).getRSItemDefInts()).getRSItemDefID() * Context.resolve().multipliers.ITEMDEF_ID;
+			return ((RSItemDefID) ((RSItemDefInts) definition).getRSItemDefInts()).getRSItemDefID() * Context.multipliers().ITEMDEF_ID;
 		} catch (final ClassCastException ignored) {
 		}
 		return -1;

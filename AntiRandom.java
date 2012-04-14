@@ -24,7 +24,7 @@ public abstract class AntiRandom implements Condition, Task, PaintListener {
 
 	public void onRepaint(final Graphics render) {
 		final Point p = Mouse.getLocation();
-		final Canvas canvas = Context.resolve().getCanvas();
+		final Canvas canvas = Context.client().getCanvas();
 		final int w = canvas.getWidth(), h = canvas.getHeight();
 		render.setColor(new Color(51, 153, 255, 30));
 		render.fillRect(0, 0, p.x - 1, p.y - 1);

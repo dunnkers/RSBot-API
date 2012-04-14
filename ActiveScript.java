@@ -11,17 +11,13 @@ import org.powerbot.concurrent.Processor;
 import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
-import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.concurrent.strategy.Condition;
+import org.powerbot.concurrent.strategy.DaemonState;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.concurrent.strategy.StrategyDaemon;
 import org.powerbot.concurrent.strategy.StrategyGroup;
 import org.powerbot.event.EventManager;
-import org.powerbot.game.GameDefinition;
-import org.powerbot.game.bot.Bot;
-import org.powerbot.gui.BotChrome;
-
-import static org.powerbot.concurrent.strategy.StrategyDaemon.State;
+import org.powerbot.game.bot.Context;
 
 /**
  * @author Timer
@@ -34,7 +30,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 	private StrategyDaemon executor;
 	private final List<EventListener> listeners;
 
-	private Bot bot;
+	private Context context;
 	private boolean silent;
 
 	public ActiveScript() {
@@ -45,11 +41,11 @@ public abstract class ActiveScript implements EventListener, Processor {
 		silent = false;
 	}
 
-	public final void init(final Bot bot) {
-		this.bot = bot;
-		eventManager = bot.getEventDispatcher();
-		container = new TaskProcessor(bot.threadGroup);
-		executor = new StrategyDaemon(container, bot.getContainer());
+	public final void init(final Context context) {
+		this.context = context;
+		eventManager = context.getEventManager();
+		container = new TaskProcessor(context.getThreadGroup());
+		executor = new StrategyDaemon(container, context.getContainer());
 	}
 
 	protected final void provide(final Strategy strategy) {
@@ -100,8 +96,8 @@ public abstract class ActiveScript implements EventListener, Processor {
 			public void run() {
 				setup();
 				resume();
-				if (bot != null) {
-					bot.ensureAntiRandoms();
+				if (context != null) {
+					context.ensureAntiRandoms();
 				}
 			}
 		};
@@ -149,9 +145,9 @@ public abstract class ActiveScript implements EventListener, Processor {
 		container.shutdown();
 
 		final String name = Thread.currentThread().getThreadGroup().getName();
-		if (name.startsWith(GameDefinition.THREADGROUPNAMEPREFIX) ||
-				name.startsWith(ThreadPool.THREADGROUPNAMEPREFIX)) {
-			BotChrome.getInstance().toolbar.updateScriptControls();
+		if (name.startsWith("GameDefinition-") ||
+				name.startsWith("ThreadPool@")) {
+			context.updateControls();
 		}
 	}
 
@@ -162,12 +158,12 @@ public abstract class ActiveScript implements EventListener, Processor {
 		container.stop();
 	}
 
-	protected final State getState() {
+	protected final DaemonState getState() {
 		return executor.state;
 	}
 
 	public final boolean isRunning() {
-		return getState() != State.DESTROYED;
+		return getState() != DaemonState.DESTROYED;
 	}
 
 	public final boolean isPaused() {
@@ -175,7 +171,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 	}
 
 	public final boolean isLocked() {
-		return getState() == State.LOCKED;
+		return getState() == DaemonState.LOCKED;
 	}
 
 	public final boolean isSilentlyLocked() {

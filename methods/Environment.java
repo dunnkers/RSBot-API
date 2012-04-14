@@ -4,32 +4,25 @@ import java.awt.image.BufferedImage;
 
 import org.powerbot.game.api.util.ScreenCapture;
 import org.powerbot.game.bot.Context;
-import org.powerbot.service.NetworkAccount;
 
 public class Environment {
 	public static String getDisplayName() {
-		if (NetworkAccount.getInstance().isLoggedIn()) {
-			return NetworkAccount.getInstance().getAccount().getDisplayName();
-		}
-		return null;
+		return Context.get().getDisplayName();
 	}
 
 	public static int getUserId() {
-		if (NetworkAccount.getInstance().isLoggedIn()) {
-			return NetworkAccount.getInstance().getAccount().getID();
-		}
-		return -1;
+		return Context.get().getUserId();
 	}
 
 	public static BufferedImage captureScreen() {
-		return ScreenCapture.capture(Context.resolve());
+		return ScreenCapture.capture(Context.get());
 	}
 
 	public static void saveScreenCapture() {
-		ScreenCapture.save(Context.resolve());
+		ScreenCapture.save(Context.get());
 	}
 
 	public static void saveScreenCapture(final String fileName) {
-		ScreenCapture.save(Context.resolve(), fileName);
+		ScreenCapture.save(Context.get(), fileName);
 	}
 }

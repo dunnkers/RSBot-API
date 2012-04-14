@@ -7,10 +7,10 @@ import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.node.SceneObject;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSAnimableNode;
@@ -135,8 +135,8 @@ public class SceneEntities {
 	}
 
 	private static Set<SceneObject> getAtLocal(int x, int y, final int mask) {
-		final Bot bot = Context.resolve();
-		final Client client = bot.getClient();
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
 		final Set<SceneObject> objects = new LinkedHashSet<SceneObject>();
 		final Object[][][] groundArray = getRSGroundArray(client);
 		if (groundArray == null) {
@@ -144,7 +144,7 @@ public class SceneEntities {
 		}
 
 		try {
-			final int plane = client.getPlane() * bot.multipliers.GLOBAL_PLANE;
+			final int plane = client.getPlane() * multipliers.GLOBAL_PLANE;
 			final Object rsGround = groundArray[plane][x][y];
 
 			if (rsGround != null) {

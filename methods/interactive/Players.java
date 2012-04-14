@@ -34,7 +34,7 @@ public class Players {
 	 * @return An array of the currently loaded Players in the game that are accepted by the provided filter.
 	 */
 	public static Player[] getLoaded(final Filter<Player> filter) {
-		final Client client = Context.resolve().getClient();
+		final Client client = Context.client();
 		final int[] indices = client.getRSPlayerIndexArray();
 		final Object[] playerArray = client.getRSPlayerArray();
 		final Set<Player> players = new HashSet<Player>();
@@ -50,7 +50,7 @@ public class Players {
 	}
 
 	public static Player getNearest(final Filter<Player> filter) {
-		final Client client = Context.resolve().getClient();
+		final Client client = Context.client();
 		final int[] indices = client.getRSPlayerIndexArray();
 		final Object[] playerArray = client.getRSPlayerArray();
 		Player player = null;
@@ -75,6 +75,6 @@ public class Players {
 	 * @return The client's local <code>Player</code>.
 	 */
 	public static Player getLocal() {
-		return new Player(Context.resolve().getClient().getMyRSPlayer());
+		return new Player(Context.client().getMyRSPlayer());
 	}
 }

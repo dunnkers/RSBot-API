@@ -16,7 +16,7 @@ public class LocationDefinition implements Identifiable {
 
 	public LocationDefinition(final Object def) {
 		this.def = def;
-		this.id_multiplier = Context.resolve().multipliers.OBJECTDEF_ID;
+		this.id_multiplier = Context.multipliers().OBJECTDEF_ID;
 	}
 
 	public String getName() {

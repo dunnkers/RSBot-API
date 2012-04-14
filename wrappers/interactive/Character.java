@@ -19,7 +19,6 @@ import org.powerbot.game.api.wrappers.Rotatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.CharacterModel;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Model;
@@ -55,9 +54,8 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	private final Multipliers multipliers;
 
 	public Character() {
-		final Bot bot = Context.resolve();
-		this.client = bot.getClient();
-		this.multipliers = bot.multipliers;
+		this.client = Context.client();
+		this.multipliers = Context.multipliers();
 	}
 
 	public abstract int getLevel();

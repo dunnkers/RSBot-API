@@ -16,7 +16,7 @@ public class Settings {
 	 * @return The <code>int[]</code> of all the game's settings in their respective positioning.
 	 */
 	public static int[] get() {
-		return ((int[]) ((SettingsData) Context.resolve().getClient().getSettingArray()).getSettingsData()).clone();
+		return ((int[]) ((SettingsData) Context.client().getSettingArray()).getSettingsData()).clone();
 	}
 
 	/**

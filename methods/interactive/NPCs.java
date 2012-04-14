@@ -52,7 +52,7 @@ public class NPCs {
 	 * @return An array of the currently loaded Npcs in the game that are accepted by the provided filter.
 	 */
 	public static NPC[] getLoaded(final Filter<NPC> filter) {
-		final Client client = Context.resolve().getClient();
+		final Client client = Context.client();
 		final int[] indices = client.getRSNPCIndexArray();
 		final Set<NPC> npcs = new HashSet<NPC>();
 		for (final int index : indices) {
@@ -81,7 +81,7 @@ public class NPCs {
 	}
 
 	public static NPC getNearest(final Filter<NPC> filter) {
-		final Client client = Context.resolve().getClient();
+		final Client client = Context.client();
 		final int[] indices = client.getRSNPCIndexArray();
 		NPC npc = null;
 		double distance = Double.MAX_VALUE;

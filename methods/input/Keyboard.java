@@ -7,8 +7,8 @@ import java.awt.event.KeyListener;
 
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
+import org.powerbot.game.client.Client;
 
 /**
  * A utility that handles the dispatching of fake key events.
@@ -176,11 +176,11 @@ public class Keyboard {
 	 * @return The <code>org.powerbot.game.client.input.Keyboard</code> to relay events to.
 	 */
 	private static org.powerbot.game.client.input.Keyboard getKeyboard() {
-		final Bot bot = Context.resolve();
-		if (bot.getClient() == null || bot.getClient().getCanvas() == null) {
+		final Client client = Context.client();
+		if (client == null || client.getCanvas() == null) {
 			throw new RuntimeException("client not ready for events");
 		}
-		final KeyListener[] listeners = bot.getClient().getCanvas().getKeyListeners();
+		final KeyListener[] listeners = client.getCanvas().getKeyListeners();
 		if (listeners.length != 1) {
 			throw new RuntimeException("listener mismatch");
 		}
@@ -193,11 +193,11 @@ public class Keyboard {
 	 * @return The <code>Component</code> to dispatch events to.
 	 */
 	private static Component getTarget() {
-		final Bot bot = Context.resolve();
-		if (bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0) {
+		final Context context = Context.get();
+		if (context.getApplet() == null || context.getApplet().getComponentCount() == 0) {
 			throw new RuntimeException("client not ready for events");
 		}
-		return bot.appletContainer.getComponent(0);
+		return context.getApplet().getComponent(0);
 	}
 
 	/**

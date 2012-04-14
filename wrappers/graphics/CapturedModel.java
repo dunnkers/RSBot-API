@@ -13,7 +13,6 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Verifiable;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Model;
 import org.powerbot.game.client.ModelCapture;
@@ -234,9 +233,9 @@ public abstract class CapturedModel implements Entity {
 	}
 
 	private int[][] projectVertices() {
-		final Bot bot = Context.resolve();
-		final Calculations.Toolkit toolkit = bot.toolkit;
-		final Calculations.Viewport viewport = bot.viewport;
+		final Context context = Context.get();
+		final Calculations.Toolkit toolkit = context.getToolkit();
+		final Calculations.Viewport viewport = context.getViewport();
 
 		update();
 		final int locX = getLocalX();

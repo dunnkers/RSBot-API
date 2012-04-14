@@ -9,34 +9,34 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 
 public class ScreenCapture {
 	private static final Logger log = Logger.getLogger(ScreenCapture.class.getName());
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-hhmmss");
 
-	public static void save(final Bot bot) {
+	public static void save(final Context context) {
 		final String name = ScreenCapture.dateFormat.format(new Date()) + ".png";
 		final File dir = new File(".");
 		if (dir.isDirectory() || dir.mkdirs()) {
-			ScreenCapture.save(bot, new File(dir, name), "png");
+			ScreenCapture.save(context, new File(dir, name), "png");
 		}
 	}
 
-	public static void save(final Bot bot, String fileName) {
+	public static void save(final Context context, String fileName) {
 		if (!fileName.endsWith(".png")) {
 			fileName = fileName.concat(".png");
 		}
 
 		final File dir = new File(".");
 		if (dir.isDirectory() || dir.mkdirs()) {
-			ScreenCapture.save(bot, new File(dir, fileName), "png");
+			ScreenCapture.save(context, new File(dir, fileName), "png");
 		}
 	}
 
-	private static void save(final Bot bot, final File file, final String type) {
+	private static void save(final Context context, final File file, final String type) {
 		try {
-			final BufferedImage image = capture(bot);
+			final BufferedImage image = capture(context);
 			ImageIO.write(image, type, file);
 			log.severe("Saved screen capture as " + file.getName());
 		} catch (final Exception ignored) {
@@ -44,8 +44,8 @@ public class ScreenCapture {
 		}
 	}
 
-	public static BufferedImage capture(final Bot bot) {
-		final BufferedImage source = bot.getImage();
+	public static BufferedImage capture(final Context context) {
+		final BufferedImage source = context.getImage();
 		final WritableRaster raster = source.copyData(null);
 		return new BufferedImage(source.getColorModel(), raster, source.isAlphaPremultiplied(), null);
 	}

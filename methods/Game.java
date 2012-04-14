@@ -4,12 +4,13 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 
 import org.powerbot.game.api.util.internal.Constants;
+import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.BaseInfoInts;
 import org.powerbot.game.client.BaseInfoX;
 import org.powerbot.game.client.BaseInfoY;
+import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInfoBaseInfo;
 
 /**
@@ -29,9 +30,10 @@ public class Game {
 	 * @return The current state of the game client.
 	 */
 	public static int getClientState() {
-		final Bot bot = Context.resolve();
-		final Constants constants = bot.constants;
-		final int clientState = bot.getClient().getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		final Constants constants = Context.constants();
+		final int clientState = client.getLoginIndex() * multipliers.GLOBAL_LOGININDEX;
 		if (clientState == constants.CLIENTSTATE_3) {
 			return 3;
 		} else if (clientState == constants.CLIENTSTATE_6) {
@@ -67,43 +69,48 @@ public class Game {
 	 * @return The floor level, or plane, you are currently located on.
 	 */
 	public static int getPlane() {
-		final Bot bot = Context.resolve();
-		return bot.getClient().getPlane() * bot.multipliers.GLOBAL_PLANE;
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		return client.getPlane() * multipliers.GLOBAL_PLANE;
 	}
 
 	/**
 	 * @return The x location of the currently loaded map base.
 	 */
 	public static int getBaseX() {
-		final Bot bot = Context.resolve();
-		return (((BaseInfoX) ((BaseInfoInts) ((RSInfoBaseInfo) bot.getClient().getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoX() * bot.multipliers.BASEDATA_X) >> 8;
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		return (((BaseInfoX) ((BaseInfoInts) ((RSInfoBaseInfo) client.getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoX() * multipliers.BASEDATA_X) >> 8;
 	}
 
 	/**
 	 * @return The y location of the currently loaded map base.
 	 */
 	public static int getBaseY() {
-		final Bot bot = Context.resolve();
-		return (((BaseInfoY) ((BaseInfoInts) ((RSInfoBaseInfo) bot.getClient().getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoY() * bot.multipliers.BASEDATA_Y) >> 8;
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		return (((BaseInfoY) ((BaseInfoInts) ((RSInfoBaseInfo) client.getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoY() * multipliers.BASEDATA_Y) >> 8;
 	}
 
 	public static Tile getMapBase() {
-		final Bot bot = Context.resolve();
-		final Object infoInts = ((BaseInfoInts) ((RSInfoBaseInfo) bot.getClient().getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts();
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		final Object infoInts = ((BaseInfoInts) ((RSInfoBaseInfo) client.getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts();
 		return new Tile(
-				(((BaseInfoX) infoInts).getBaseInfoX() * bot.multipliers.BASEDATA_X) >> 8,
-				(((BaseInfoY) infoInts).getBaseInfoY() * bot.multipliers.BASEDATA_Y) >> 8,
+				(((BaseInfoX) infoInts).getBaseInfoX() * multipliers.BASEDATA_X) >> 8,
+				(((BaseInfoY) infoInts).getBaseInfoY() * multipliers.BASEDATA_Y) >> 8,
 				Game.getPlane()
 		);
 	}
 
 	public static int getLoopCycle() {
-		final Bot bot = Context.resolve();
-		return bot.getClient().getLoopCycle() * bot.multipliers.GLOBAL_LOOPCYCLE;
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		return client.getLoopCycle() * multipliers.GLOBAL_LOOPCYCLE;
 	}
 
 	public static Dimension getDimensions() {
-		final Canvas canvas = Context.resolve().getCanvas();
+		final Canvas canvas = Context.client().getCanvas();
 		return new Dimension(canvas.getWidth(), canvas.getHeight());
 	}
 }

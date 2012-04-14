@@ -15,7 +15,6 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.ViewportEntity;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.input.MouseManipulator;
 import org.powerbot.game.client.Client;
@@ -211,7 +210,7 @@ public class Mouse {
 	 * @return <tt>true</tt> if we reached this position; otherwise <tt>false</tt>.
 	 */
 	public static boolean move(int x, int y, final int randomX, final int randomY) {
-		final TaskContainer container = Context.resolve().getContainer();
+		final TaskContainer container = Context.get().getContainer();
 		final MouseManipulator task = create(x, y, randomX, randomY, false, false);
 		final Future<?> future = container.submit(task);
 		if (future != null) {
@@ -229,7 +228,7 @@ public class Mouse {
 	}
 
 	public static boolean apply(final ViewportEntity locatable, final Filter<Point> filter) {
-		final TaskContainer container = Context.resolve().getContainer();
+		final TaskContainer container = Context.get().getContainer();
 		final MouseManipulator task = new MouseManipulator(locatable, filter);
 		final Future<?> future = container.submit(task);
 		if (future != null) {
@@ -279,9 +278,9 @@ public class Mouse {
 			mouse.sendEvent(
 					new MouseEvent(target, MouseEvent.MOUSE_EXITED, System.currentTimeMillis(), 0, x, y, 0, false)
 			);
-			final Bot bot = Context.resolve();
+			final Client client = Context.client();
 			final Canvas canvas;
-			if (bot != null && (canvas = bot.getCanvas()) != null) {
+			if (client != null && (canvas = client.getCanvas()) != null) {
 				final int w = canvas.getWidth(), h = canvas.getHeight(), d = 50;
 				if (x < d) {
 					if (y < d) {
@@ -328,7 +327,7 @@ public class Mouse {
 	 * @return The <code>org.powerbot.game.client.input.Mouse</code> to relay events to.
 	 */
 	private static org.powerbot.game.client.input.Mouse getMouse() {
-		final Client client = Context.resolve().getClient();
+		final Client client = Context.client();
 		return client == null ? null : client.getMouse();
 	}
 
@@ -342,11 +341,11 @@ public class Mouse {
 	 * @return The <code>Component</code> to dispatch events to.
 	 */
 	private static Component getTarget() {
-		final Bot bot = Context.resolve();
-		if (bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0) {
+		final Context context = Context.get();
+		if (context.getApplet() == null || context.getApplet().getComponentCount() == 0) {
 			return null;
 		}
-		return bot.appletContainer.getComponent(0);
+		return context.getApplet().getComponent(0);
 	}
 
 	private static int getDragLength() {
@@ -381,9 +380,9 @@ public class Mouse {
 	 * @return <tt>true</tt> if the given point is on the canvas; otherwise <tt>false</tt>.
 	 */
 	public static boolean isOnCanvas(final int x, final int y) {
-		final Bot bot = Context.resolve();
+		final Context context = Context.get();
 		final Canvas canvas;
-		return !(bot == null || (canvas = bot.getCanvas()) == null) && x >= 0 && x < canvas.getWidth() && y >= 0 && y < canvas.getHeight();
+		return !(context.getClient() == null || (canvas = context.getClient().getCanvas()) == null) && x >= 0 && x < canvas.getWidth() && y >= 0 && y < canvas.getHeight();
 	}
 
 	private static MouseManipulator create(final int x, final int y, final int randomX, final int randomY, final boolean click, final boolean left) {

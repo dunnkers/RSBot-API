@@ -14,7 +14,6 @@ import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.util.node.HashTable;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Identifiable;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterfaceActions;
@@ -143,7 +142,7 @@ public class WidgetChild implements Entity, Identifiable {
 		if (getInternal() == null) {
 			return new Point(-1, -1);
 		}
-		final Client client = Context.resolve().getClient();
+		final Client client = Context.client();
 		final int parentId = getParentId();
 		int x = 0, y = 0;
 		if (parentId != -1) {
@@ -174,12 +173,12 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public int getRelativeX() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceX) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceX() * Context.resolve().multipliers.INTERFACE_X : -1;
+		return widget != null ? ((RSInterfaceX) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceX() * Context.multipliers().INTERFACE_X : -1;
 	}
 
 	public int getRelativeY() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceY) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceY() * Context.resolve().multipliers.INTERFACE_Y : -1;
+		return widget != null ? ((RSInterfaceY) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceY() * Context.multipliers().INTERFACE_Y : -1;
 	}
 
 	public Point getRelativeLocation() {
@@ -188,7 +187,7 @@ public class WidgetChild implements Entity, Identifiable {
 			return new Point(-1, -1);
 		}
 		final Object rsInterfaceInts = ((RSInterfaceInts) widget).getRSInterfaceInts();
-		final Multipliers multipliers = Context.resolve().multipliers;
+		final Multipliers multipliers = Context.multipliers();
 		return new Point(
 				((RSInterfaceX) rsInterfaceInts).getRSInterfaceX() * multipliers.INTERFACE_X,
 				((RSInterfaceY) rsInterfaceInts).getRSInterfaceY() * multipliers.INTERFACE_Y
@@ -200,7 +199,7 @@ public class WidgetChild implements Entity, Identifiable {
 			return getHorizontalScrollThumbSize();
 		}
 		final Object widget = getInternal();
-		return widget != null ? (((RSInterfaceWidth) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceWidth() * Context.resolve().multipliers.INTERFACE_WIDTH) - 4 : -1;
+		return widget != null ? (((RSInterfaceWidth) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceWidth() * Context.multipliers().INTERFACE_WIDTH) - 4 : -1;
 	}
 
 	public int getHeight() {
@@ -208,32 +207,32 @@ public class WidgetChild implements Entity, Identifiable {
 			return getVerticalScrollThumbSize();
 		}
 		final Object widget = getInternal();
-		return widget != null ? (((RSInterfaceHeight) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHeight() * Context.resolve().multipliers.INTERFACE_HEIGHT) - 4 : -1;
+		return widget != null ? (((RSInterfaceHeight) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHeight() * Context.multipliers().INTERFACE_HEIGHT) - 4 : -1;
 	}
 
 	public int getId() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceID) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceID() * Context.resolve().multipliers.INTERFACE_ID : -1;
+		return widget != null ? ((RSInterfaceID) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceID() * Context.multipliers().INTERFACE_ID : -1;
 	}
 
 	public int getType() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceType) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceType() * Context.resolve().multipliers.INTERFACE_TYPE : -1;
+		return widget != null ? ((RSInterfaceType) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceType() * Context.multipliers().INTERFACE_TYPE : -1;
 	}
 
 	public int getSpecialType() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceSpecialType) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceSpecialType() * Context.resolve().multipliers.INTERFACE_SPECIALTYPE : -1;
+		return widget != null ? ((RSInterfaceSpecialType) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceSpecialType() * Context.multipliers().INTERFACE_SPECIALTYPE : -1;
 	}
 
 	public int getChildId() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceComponentID) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceComponentID() * Context.resolve().multipliers.INTERFACE_COMPONENTID : -1;
+		return widget != null ? ((RSInterfaceComponentID) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceComponentID() * Context.multipliers().INTERFACE_COMPONENTID : -1;
 	}
 
 	public int getChildIndex() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceComponentIndex) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceComponentIndex() * Context.resolve().multipliers.INTERFACE_COMPONENTINDEX : -1;
+		return widget != null ? ((RSInterfaceComponentIndex) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceComponentIndex() * Context.multipliers().INTERFACE_COMPONENTINDEX : -1;
 	}
 
 	public String getChildName() {
@@ -243,7 +242,7 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public int getTextureId() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceTextureID) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceTextureID() * Context.resolve().multipliers.INTERFACE_TEXTUREID : -1;
+		return widget != null ? ((RSInterfaceTextureID) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceTextureID() * Context.multipliers().INTERFACE_TEXTUREID : -1;
 	}
 
 	public String getText() {
@@ -253,12 +252,12 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public int getTextColor() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceTextColor) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceTextColor() * Context.resolve().multipliers.INTERFACE_TEXTCOLOR : -1;
+		return widget != null ? ((RSInterfaceTextColor) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceTextColor() * Context.multipliers().INTERFACE_TEXTCOLOR : -1;
 	}
 
 	public int getShadowColor() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceShadowColor) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceShadowColor() * Context.resolve().multipliers.INTERFACE_SHADOWCOLOR : -1;
+		return widget != null ? ((RSInterfaceShadowColor) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceShadowColor() * Context.multipliers().INTERFACE_SHADOWCOLOR : -1;
 	}
 
 	public String getTooltip() {
@@ -268,7 +267,7 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public int getBorderThickness() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceBorderThinkness) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceBorderThinkness() * Context.resolve().multipliers.INTERFACE_BORDERTHICKNESS : -1;
+		return widget != null ? ((RSInterfaceBorderThinkness) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceBorderThinkness() * Context.multipliers().INTERFACE_BORDERTHICKNESS : -1;
 	}
 
 	public String getSelectedAction() {
@@ -278,17 +277,17 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public int getModelId() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceModelID) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceModelID() * Context.resolve().multipliers.INTERFACE_MODELID : -1;
+		return widget != null ? ((RSInterfaceModelID) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceModelID() * Context.multipliers().INTERFACE_MODELID : -1;
 	}
 
 	public int getModelType() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceModelType) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceModelType() * Context.resolve().multipliers.INTERFACE_MODELTYPE : -1;
+		return widget != null ? ((RSInterfaceModelType) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceModelType() * Context.multipliers().INTERFACE_MODELTYPE : -1;
 	}
 
 	public int getModelZoom() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceModelZoom) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceModelZoom() * Context.resolve().multipliers.INTERFACE_MODELZOOM : -1;
+		return widget != null ? ((RSInterfaceModelZoom) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceModelZoom() * Context.multipliers().INTERFACE_MODELZOOM : -1;
 	}
 
 	public boolean isInventory() {
@@ -298,22 +297,22 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public int getChildStackSize() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceComponentStackSize) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceComponentStackSize() * Context.resolve().multipliers.INTERFACE_COMPONENTSTACKSIZE : -1;
+		return widget != null ? ((RSInterfaceComponentStackSize) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceComponentStackSize() * Context.multipliers().INTERFACE_COMPONENTSTACKSIZE : -1;
 	}
 
 	public int getXRotation() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceXRotation) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceXRotation() * Context.resolve().multipliers.INTERFACE_XROTATION : -1;
+		return widget != null ? ((RSInterfaceXRotation) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceXRotation() * Context.multipliers().INTERFACE_XROTATION : -1;
 	}
 
 	public int getYRotation() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceYRotation) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceYRotation() * Context.resolve().multipliers.INTERFACE_YROTATION : -1;
+		return widget != null ? ((RSInterfaceYRotation) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceYRotation() * Context.multipliers().INTERFACE_YROTATION : -1;
 	}
 
 	public int getZRotation() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceZRotation) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceZRotation() * Context.resolve().multipliers.INTERFACE_ZROTATION : -1;
+		return widget != null ? ((RSInterfaceZRotation) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceZRotation() * Context.multipliers().INTERFACE_ZROTATION : -1;
 	}
 
 	public String[] getActions() {
@@ -333,37 +332,37 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public int getHorizontalScrollPosition() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceHorizontalScrollbarPosition) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHorizontalScrollbarPosition() * Context.resolve().multipliers.INTERFACE_HORIZONTALSCROLLBARSIZE : -1;
+		return widget != null ? ((RSInterfaceHorizontalScrollbarPosition) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHorizontalScrollbarPosition() * Context.multipliers().INTERFACE_HORIZONTALSCROLLBARSIZE : -1;
 	}
 
 	public int getScrollableContentWidth() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceHorizontalScrollbarSize) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHorizontalScrollbarSize() * Context.resolve().multipliers.INTERFACE_HORIZONTALSCROLLBARSIZE : -1;
+		return widget != null ? ((RSInterfaceHorizontalScrollbarSize) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHorizontalScrollbarSize() * Context.multipliers().INTERFACE_HORIZONTALSCROLLBARSIZE : -1;
 	}
 
 	public int getHorizontalScrollThumbSize() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceHorizontalScrollbarThumbSize) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHorizontalScrollbarThumbSize() * Context.resolve().multipliers.INTERFACE_HORIZONTALSCROLLBARTHUMBSIZE : -1;
+		return widget != null ? ((RSInterfaceHorizontalScrollbarThumbSize) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHorizontalScrollbarThumbSize() * Context.multipliers().INTERFACE_HORIZONTALSCROLLBARTHUMBSIZE : -1;
 	}
 
 	public int getVerticalScrollPosition() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceVerticalScrollbarPosition) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceVerticalScrollbarPosition() * Context.resolve().multipliers.INTERFACE_VERTICALSCROLLBARSIZE : -1;
+		return widget != null ? ((RSInterfaceVerticalScrollbarPosition) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceVerticalScrollbarPosition() * Context.multipliers().INTERFACE_VERTICALSCROLLBARSIZE : -1;
 	}
 
 	public int getScrollableContentHeight() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceVerticalScrollbarSize) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceVerticalScrollbarSize() * Context.resolve().multipliers.INTERFACE_VERTICALSCROLLBARSIZE : -1;
+		return widget != null ? ((RSInterfaceVerticalScrollbarSize) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceVerticalScrollbarSize() * Context.multipliers().INTERFACE_VERTICALSCROLLBARSIZE : -1;
 	}
 
 	public int getVerticalScrollThumbSize() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceVerticalScrollbarThumbSize) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceVerticalScrollbarThumbSize() * Context.resolve().multipliers.INTERFACE_VERTICALSCROLLBARTHUMBSIZE : -1;
+		return widget != null ? ((RSInterfaceVerticalScrollbarThumbSize) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceVerticalScrollbarThumbSize() * Context.multipliers().INTERFACE_VERTICALSCROLLBARTHUMBSIZE : -1;
 	}
 
 	public int getBoundsArrayIndex() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceBoundsArrayIndex) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceBoundsArrayIndex() * Context.resolve().multipliers.INTERFACE_BOUNDSARRAYINDEX : -1;
+		return widget != null ? ((RSInterfaceBoundsArrayIndex) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceBoundsArrayIndex() * Context.multipliers().INTERFACE_BOUNDSARRAYINDEX : -1;
 	}
 
 	public WidgetChild[] getChildren() {
@@ -417,19 +416,20 @@ public class WidgetChild implements Entity, Identifiable {
 		if (inter == null) {
 			return -1;
 		}
-		final Bot bot = Context.resolve();
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
 
-		final int parentId = ((RSInterfaceParentID) ((RSInterfaceInts) inter).getRSInterfaceInts()).getRSInterfaceParentID() * bot.multipliers.INTERFACE_PARENTID;
+		final int parentId = ((RSInterfaceParentID) ((RSInterfaceInts) inter).getRSInterfaceInts()).getRSInterfaceParentID() * multipliers.INTERFACE_PARENTID;
 
 		if (parentId != -1) {
 			return parentId;
 		}
 
 		final int mainID = getId() >>> 0x10;
-		final HashTable ncI = new HashTable(bot.getClient().getRSInterfaceNC());
+		final HashTable ncI = new HashTable(client.getRSInterfaceNC());
 		for (RSInterfaceNode node = (RSInterfaceNode) ncI.getFirst(); node != null; node = (RSInterfaceNode) ncI.getNext()) {
-			if (mainID == ((RSInterfaceNodeMainID) ((RSInterfaceNodeInts) node.getData()).getRSInterfaceNodeInts()).getRSInterfaceNodeMainID() * bot.multipliers.INTERFACENODE_MAINID) {
-				final long multiplier = (((long) bot.multipliers.NODE_ID) << 0x20) + ((bot.multipliers.NODE_ID_p2 & 0xffffffffL));
+			if (mainID == ((RSInterfaceNodeMainID) ((RSInterfaceNodeInts) node.getData()).getRSInterfaceNodeInts()).getRSInterfaceNodeMainID() * multipliers.INTERFACENODE_MAINID) {
+				final long multiplier = (((long) multipliers.NODE_ID) << 32) + ((multipliers.NODE_ID_p2 & 0xffffffffL));
 				return (int) (node.getID() * multiplier);
 			}
 		}

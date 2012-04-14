@@ -9,6 +9,7 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
+import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.util.node.Deque;
 import org.powerbot.game.api.util.node.Queue;
 import org.powerbot.game.bot.Bot;
@@ -30,10 +31,11 @@ public class Menu {
 	 * @return The position of the latest opened menu.
 	 */
 	public static Point getLocation() {
-		final Bot bot = Context.resolve();
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
 		return new Point(
-				bot.getClient().getMenuX() * bot.multipliers.GLOBAL_MENUX,
-				bot.getClient().getMenuY() * bot.multipliers.GLOBAL_MENUY
+				client.getMenuX() * multipliers.GLOBAL_MENUX,
+				client.getMenuY() * multipliers.GLOBAL_MENUY
 		);
 	}
 
@@ -41,10 +43,11 @@ public class Menu {
 	 * @return The position of the opened sub (collapsed) menu.
 	 */
 	public static Point getSubLocation() {
-		final Bot bot = Context.resolve();
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
 		return new Point(
-				bot.getClient().getSubMenuX() * bot.multipliers.GLOBAL_SUBMENUX,
-				bot.getClient().getSubMenuY() * bot.multipliers.GLOBAL_SUBMENUY
+				client.getSubMenuX() * multipliers.GLOBAL_SUBMENUX,
+				client.getSubMenuY() * multipliers.GLOBAL_SUBMENUY
 		);
 	}
 
@@ -52,32 +55,36 @@ public class Menu {
 	 * @return The width of the opened menu.
 	 */
 	public static int getWidth() {
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
 		final Bot bot = Context.resolve();
-		return bot.getClient().getMenuWidth() * bot.multipliers.GLOBAL_MENUWIDTH;
+		return client.getMenuWidth() * multipliers.GLOBAL_MENUWIDTH;
 	}
 
 	/**
 	 * @return The height of the opened menu.
 	 */
 	public static int getHeight() {
-		final Bot bot = Context.resolve();
-		return bot.getClient().getMenuHeight() * bot.multipliers.GLOBAL_MENUHEIGHT;
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		return client.getMenuHeight() * multipliers.GLOBAL_MENUHEIGHT;
 	}
 
 	/**
 	 * @return The width of the opened sub (collapsed) menu.
 	 */
 	public static int getSubWidth() {
-		final Bot bot = Context.resolve();
-		return bot.getClient().getSubMenuWidth() * bot.multipliers.GLOBAL_SUBMENUWIDTH;
+		final Client client = Context.client();
+		final Multipliers multipliers = Context.multipliers();
+		return client.getSubMenuWidth() * multipliers.GLOBAL_SUBMENUWIDTH;
 	}
 
 	public static boolean isOpen() {
-		return Context.resolve().getClient().isMenuOpen();
+		return Context.client().isMenuOpen();
 	}
 
 	public static boolean isCollapsed() {
-		return Context.resolve().getClient().isMenuCollapsed();
+		return Context.client().isMenuCollapsed();
 	}
 
 	public static boolean select(final String action) {
@@ -121,7 +128,7 @@ public class Menu {
 			return false;
 		}
 		if (isCollapsed()) {
-			final Queue<MenuGroupNode> groups = new Queue<MenuGroupNode>(Context.resolve().getClient().getCollapsedMenuItems());
+			final Queue<MenuGroupNode> groups = new Queue<MenuGroupNode>(Context.client().getCollapsedMenuItems());
 			int idx = 0, mainIdx = 0;
 			for (MenuGroupNode g = groups.getHead(); g != null; g = groups.getNext(), ++mainIdx) {
 				final Queue<MenuItemNode> subItems = new Queue<MenuItemNode>(((MenuGroupNodeItems) g.getData()).getMenuGroupNodeItems());
@@ -244,7 +251,7 @@ public class Menu {
 
 	private static String[] getMenuItemPart(final boolean firstPart) {
 		final LinkedList<String> itemsList = new LinkedList<String>();
-		final Client client = Context.resolve().getClient();
+		final Client client = Context.client();
 		if (isCollapsed()) {
 			final Queue<MenuGroupNode> menu = new Queue<MenuGroupNode>(client.getCollapsedMenuItems());
 			try {

@@ -86,7 +86,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 		return container.submit(task);
 	}
 
-	protected final void setStoppableExecution(final Condition policy) {
+	protected final void setInterruptionPolicy(final Condition policy) {
 	}
 
 	protected final void setIterationDelay(final int milliseconds) {

@@ -208,17 +208,13 @@ public class Calculations {
 	public static double distance(final int x1, final int y1, final int x2, final int y2) {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
-	
-	public static double distanceTo(final Locatable loc) {
-		return distance(loc.getLocation(), Players.getLocal().getLocation());
+
+	public static double distanceTo(final Locatable locatable) {
+		return distance(locatable.getLocation(), Players.getLocal().getLocation());
 	}
 
-	public static double distanceTo(final Tile tile) {
-		return distance(tile, Players.getLocal().getLocation());
-	}
-
-	public static double distanceTo(final RegionOffset tile) {
-		return distance(tile, Players.getLocal().getRegionOffset());
+	public static double distanceTo(final RegionOffset offset) {
+		return distance(offset, Players.getLocal().getRegionOffset());
 	}
 
 	public static double distanceTo(final int x, final int y) {

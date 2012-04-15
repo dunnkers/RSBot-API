@@ -6,6 +6,7 @@ import java.awt.Point;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.widget.WidgetComposite;
 import org.powerbot.game.api.util.internal.Multipliers;
+import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.Player;
@@ -208,12 +209,12 @@ public class Calculations {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
 
-	public static double distanceTo(final Tile tile) {
-		return distance(tile, Players.getLocal().getLocation());
+	public static double distanceTo(final Locatable locatable) {
+		return distance(locatable.getLocation(), Players.getLocal().getLocation());
 	}
 
-	public static double distanceTo(final RegionOffset tile) {
-		return distance(tile, Players.getLocal().getRegionOffset());
+	public static double distanceTo(final RegionOffset offset) {
+		return distance(offset, Players.getLocal().getRegionOffset());
 	}
 
 	public static double distanceTo(final int x, final int y) {

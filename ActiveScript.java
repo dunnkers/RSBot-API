@@ -146,7 +146,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 
 		final String name = Thread.currentThread().getThreadGroup().getName();
 		if (name.startsWith("GameDefinition-") ||
-				name.startsWith("ThreadPool@")) {
+				name.startsWith("ThreadPool-")) {
 			context.updateControls();
 		}
 	}

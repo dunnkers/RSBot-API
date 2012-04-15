@@ -3,10 +3,12 @@ package org.powerbot.game.api;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
+import org.powerbot.concurrent.LoopTask;
 import org.powerbot.concurrent.Processor;
 import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
@@ -28,6 +30,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 	private EventManager eventManager;
 	private TaskContainer container;
 	private StrategyDaemon executor;
+	private final List<LoopTask> loopTasks;
 	private final List<EventListener> listeners;
 
 	private Context context;
@@ -37,6 +40,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 		eventManager = null;
 		container = null;
 		executor = null;
+		loopTasks = new ArrayList<LoopTask>();
 		listeners = new ArrayList<EventListener>();
 		silent = false;
 	}
@@ -82,6 +86,30 @@ public abstract class ActiveScript implements EventListener, Processor {
 		return container.submit(task);
 	}
 
+	public final boolean submit(final LoopTask loopTask) {
+		if (loopTasks.contains(loopTask)) {
+			return false;
+		}
+
+		loopTask.init(this);
+		loopTask.start();
+		loopTasks.add(loopTask);
+		listeners.add(loopTask);
+		if (!isLocked()) {
+			eventManager.accept(loopTask);
+		}
+
+		return true;
+	}
+
+	public final void terminated(final Task task) {
+		if (task instanceof LoopTask) {
+			final LoopTask loopTask = (LoopTask) task;
+			listeners.remove(loopTask);
+			eventManager.remove(loopTask);
+		}
+	}
+
 	protected final void setInterruptionPolicy(final Condition policy) {
 	}
 
@@ -106,6 +134,17 @@ public abstract class ActiveScript implements EventListener, Processor {
 	public final void resume() {
 		silent = false;
 		eventManager.accept(ActiveScript.this);
+		final Iterator<LoopTask> taskIterator = loopTasks.iterator();
+		while (taskIterator.hasNext()) {
+			final LoopTask task = taskIterator.next();
+			if (task.isKilled()) {
+				loopTasks.remove(task);
+				continue;
+			}
+
+			task.start();
+			container.submit(task);
+		}
 		for (final EventListener eventListener : listeners) {
 			eventManager.accept(eventListener);
 		}
@@ -118,6 +157,9 @@ public abstract class ActiveScript implements EventListener, Processor {
 
 	public final void pause(final boolean removeListener) {
 		executor.lock();
+		for (final LoopTask task : loopTasks) {
+			task.stop();
+		}
 		if (removeListener) {
 			eventManager.remove(ActiveScript.this);
 			for (final EventListener eventListener : listeners) {
@@ -138,6 +180,10 @@ public abstract class ActiveScript implements EventListener, Processor {
 			}
 		});
 		eventManager.remove(ActiveScript.this);
+		for (final LoopTask task : loopTasks) {
+			task.stop();
+			task.kill();
+		}
 		for (final EventListener eventListener : listeners) {
 			eventManager.remove(eventListener);
 		}

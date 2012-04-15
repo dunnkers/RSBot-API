@@ -39,14 +39,10 @@ import org.powerbot.game.client.SoftReferenceGet;
  */
 public class SceneObject implements Entity, Locatable, Identifiable {
 	private final Object object;
-	private final Type type;
+	private final int type;
 	private final int plane;
 
-	public static enum Type {
-		INTERACTIVE, FLOOR_DECORATION, BOUNDARY, WALL_DECORATION
-	}
-
-	public SceneObject(final Object obj, final Type type, final int plane) {
+	public SceneObject(final Object obj, final int type, final int plane) {
 		this.object = obj;
 		this.type = type;
 		this.plane = plane;
@@ -80,7 +76,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 		return Context.client().getRSObjectID(object);
 	}
 
-	public Type getType() {
+	public int getType() {
 		return type;
 	}
 
@@ -194,6 +190,6 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 
 	@Override
 	public String toString() {
-		return "location[ref=" + System.identityHashCode(object) + ",id=" + getId() + ",plane=" + plane + ",type=" + type.toString() + "]";
+		return "location[ref=" + System.identityHashCode(object) + ",id=" + getId() + ",plane=" + plane + ",type=" + Integer.toString(type) + "]";
 	}
 }

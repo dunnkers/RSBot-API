@@ -155,7 +155,7 @@ public class SceneEntities {
 						obj = node.getRSAnimable();
 						if (obj != null) {
 							if (client.getRSObjectID(obj) != -1) {
-								objects.add(new SceneObject(obj, SceneObject.Type.INTERACTIVE, plane));
+								objects.add(new SceneObject(obj, TYPE_INTERACTIVE, plane));
 							}
 						}
 					}
@@ -166,7 +166,7 @@ public class SceneEntities {
 					obj = ((RSGroundFloorDecoration) rsGround).getRSGroundFloorDecoration();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new SceneObject(obj, SceneObject.Type.FLOOR_DECORATION, plane));
+							objects.add(new SceneObject(obj, TYPE_FLOOR_DECORATION, plane));
 						}
 					}
 				}
@@ -175,14 +175,14 @@ public class SceneEntities {
 					obj = ((RSGroundBoundary1) rsGround).getRSGroundBoundary1();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new SceneObject(obj, SceneObject.Type.BOUNDARY, plane));
+							objects.add(new SceneObject(obj, TYPE_BOUNDARY, plane));
 						}
 					}
 
 					obj = ((RSGroundBoundary2) rsGround).getRSGroundBoundary2();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new SceneObject(obj, SceneObject.Type.BOUNDARY, plane));
+							objects.add(new SceneObject(obj, TYPE_BOUNDARY, plane));
 						}
 					}
 				}
@@ -191,14 +191,14 @@ public class SceneEntities {
 					obj = ((RSGroundWallDecoration1) rsGround).getRSGroundWallDecoration1();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new SceneObject(obj, SceneObject.Type.WALL_DECORATION, plane));
+							objects.add(new SceneObject(obj, TYPE_WALL_DECORATION, plane));
 						}
 					}
 
 					obj = ((RSGroundWallDecoration2) rsGround).getRSGroundWallDecoration2();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new SceneObject(obj, SceneObject.Type.WALL_DECORATION, plane));
+							objects.add(new SceneObject(obj, TYPE_WALL_DECORATION, plane));
 						}
 					}
 				}

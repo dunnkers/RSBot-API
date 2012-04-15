@@ -9,6 +9,7 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.api.wrappers.Locatable;
@@ -54,7 +55,7 @@ public class GroundItem implements Entity, Locatable, Identifiable {
 	}
 
 	public Point getNextViewportPoint() {
-		return tile.getCentralPoint();
+		return tile.getPoint(Random.nextDouble(), Random.nextDouble(), 0);
 	}
 
 	public boolean contains(final Point point) {

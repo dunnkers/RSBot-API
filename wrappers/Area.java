@@ -94,10 +94,7 @@ public class Area {
 	}
 
 	public boolean contains(final Tile tile) {
-		if (plane != -1 && tile.getPlane() != plane) {
-			throw new RuntimeException("area does not support 3d");
-		}
-		return contains(tile.getX(), tile.getY());
+		return !(plane != -1 && tile.getPlane() != plane) && contains(tile.getX(), tile.getY());
 	}
 
 	public boolean contains(final int x, final int y) {

@@ -102,9 +102,7 @@ public class Skills {
 
 	public static int getExperienceToLevel(final int index, final int endLvl) {
 		final int lvl = getRealLevel(index);
-		if (index == Skills.DUNGEONEERING && (lvl == 120 || endLvl > 120)) {
-			return 0;
-		} else if (lvl == 99 || endLvl > 99) {
+		if (index == Skills.DUNGEONEERING && (lvl == 120 || endLvl > 120) || lvl == 99 || endLvl > 99) {
 			return 0;
 		}
 		return Skills.XP_TABLE[endLvl] - getExperience(index);

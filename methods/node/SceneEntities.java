@@ -53,7 +53,7 @@ public class SceneEntities {
 	 * @return An array of all of the loaded Locations positioned on the given tile.
 	 */
 	public static SceneObject[] getLoaded(final Tile tile) {
-		final Set<SceneObject> locations = getAtLocal(tile.getX() - Game.getBaseX(), tile.getY() - Game.getBaseY(), -1);
+		final Set<SceneObject> locations = getLocalAt(tile.getX() - Game.getBaseX(), tile.getY() - Game.getBaseY(), -1);
 		return locations.toArray(new SceneObject[locations.size()]);
 	}
 
@@ -79,7 +79,7 @@ public class SceneEntities {
 		final Set<SceneObject> objects = new LinkedHashSet<SceneObject>();
 		for (int x = 0; x < 104; x++) {
 			for (int y = 0; y < 104; y++) {
-				for (final SceneObject l : getAtLocal(x, y, -1)) {
+				for (final SceneObject l : getLocalAt(x, y, -1)) {
 					if (l != null && filter.accept(l)) {
 						objects.add(l);
 					}
@@ -109,7 +109,7 @@ public class SceneEntities {
 		final RegionOffset position = Players.getLocal().getRegionOffset();
 		for (int x = 0; x < 104; x++) {
 			for (int y = 0; y < 104; y++) {
-				for (final SceneObject l : getAtLocal(x, y, -1)) {
+				for (final SceneObject l : getLocalAt(x, y, -1)) {
 					if (l != null && filter.accept(l)) {
 						final double dist = Calculations.distance(position.getX(), position.getY(), x, y);
 						if (dist < distance) {
@@ -134,7 +134,19 @@ public class SceneEntities {
 		return (Object[][][]) ((RSGroundInfoRSGroundArray) obj).getRSGroundInfoRSGroundArray();
 	}
 
-	private static Set<SceneObject> getAtLocal(int x, int y, final int mask) {
+	public static SceneObject getAt(int x, int y, final int mask) {
+		if (x > 104 || y > 104) {
+			x -= Game.getBaseX();
+			y -= Game.getBaseY();
+		}
+		final Set<SceneObject> objects = getLocalAt(x, y, mask);
+		if (objects.size() > 0) {
+			return objects.toArray(new SceneObject[objects.size()])[0];
+		}
+		return null;
+	}
+
+	public static Set<SceneObject> getLocalAt(int x, int y, final int mask) {
 		final Client client = Context.client();
 		final Multipliers multipliers = Context.multipliers();
 		final Set<SceneObject> objects = new LinkedHashSet<SceneObject>();

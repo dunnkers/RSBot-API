@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.interactive.Players;
@@ -40,7 +41,7 @@ public class LocalPath extends Path {
 
 	@Override
 	public boolean validate() {
-		return getNext() != null && !Players.getLocal().getLocation().equals(getEnd());
+		return getNext() != null && Calculations.distanceTo(getEnd()) > Math.sqrt(2);
 	}
 
 	@Override

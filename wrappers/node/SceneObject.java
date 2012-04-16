@@ -14,7 +14,7 @@ import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
-import org.powerbot.game.api.wrappers.graphics.model.LocationModel;
+import org.powerbot.game.api.wrappers.graphics.model.SceneObjectModel;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.CacheTable;
 import org.powerbot.game.client.HardReferenceGet;
@@ -98,7 +98,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 		return new Tile(Game.getBaseX() + localTile.getX(), Game.getBaseY() + localTile.getY(), localTile.getPlane());
 	}
 
-	public LocationDefinition getDefinition() {
+	public SceneObjectDefinition getDefinition() {
 		final Object object = ((RSInfoRSObjectDefLoaders) Context.client().getRSGroundInfo()).getRSInfoRSObjectDefLoaders();
 		final Object objectDefLoader = ((CacheTable) ((RSObjectDefLoaderCache) object).getRSObjectDefLoaderCache()).getCacheTable();
 		final Node ref = Nodes.lookup(objectDefLoader, getId());
@@ -107,10 +107,10 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 			if (reference instanceof SoftReferenceGet) {
 				final Object soft = ((SoftReferenceGet) reference).getSoftReferenceGet();
 				if (soft != null) {
-					return new LocationDefinition(soft instanceof SoftReference ? ((SoftReference<?>) soft).get() : soft);
+					return new SceneObjectDefinition(soft instanceof SoftReference ? ((SoftReference<?>) soft).get() : soft);
 				}
 			} else if (reference instanceof HardReferenceGet) {
-				return new LocationDefinition(((HardReferenceGet) reference).getHardReferenceGet());
+				return new SceneObjectDefinition(((HardReferenceGet) reference).getHardReferenceGet());
 			}
 		}
 		return null;
@@ -123,7 +123,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 				model = ModelCapture.modelCache.get(object);
 			}
 			if (model != null) {
-				return new LocationModel(model, this);
+				return new SceneObjectModel(model, this);
 			}
 		}
 		return null;

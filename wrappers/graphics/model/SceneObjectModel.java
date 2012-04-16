@@ -6,11 +6,11 @@ import org.powerbot.game.client.Model;
 import org.powerbot.game.client.RSInteractableManager;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;
 
-public class LocationModel extends CapturedModel {
+public class SceneObjectModel extends CapturedModel {
 	private final SceneObject location;
 	private final Object instance;
 
-	public LocationModel(final Model model, final SceneObject location) {
+	public SceneObjectModel(final Model model, final SceneObject location) {
 		super(model, location);
 		this.location = location;
 		this.instance = location.getInstance();

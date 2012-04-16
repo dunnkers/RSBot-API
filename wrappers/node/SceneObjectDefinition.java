@@ -10,11 +10,11 @@ import org.powerbot.game.client.RSObjectDefName;
 /**
  * @author Timer
  */
-public class LocationDefinition implements Identifiable {
+public class SceneObjectDefinition implements Identifiable {
 	private final Object def;
 	private final int id_multiplier;
 
-	public LocationDefinition(final Object def) {
+	public SceneObjectDefinition(final Object def) {
 		this.def = def;
 		this.id_multiplier = Context.multipliers().OBJECTDEF_ID;
 	}

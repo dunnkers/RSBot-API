@@ -28,6 +28,12 @@ public class Inventory {
 			WIDGET_BEAST_OF_BURDEN_STORAGE
 	};
 
+	public static final Filter<Item> ALL_ITEMS_FILTER = new Filter<Item>() {
+		public boolean accept(Item item) {
+			return true;
+		}
+	};
+
 	public static Item getItem(final int... ids) {
 		final Item[] items = getItems(false);
 		for (final Item item : items) {
@@ -46,6 +52,21 @@ public class Inventory {
 	}
 
 	public static Item[] getItems(final boolean cached) {
+		return getItems(cached, ALL_ITEMS_FILTER);
+	}
+
+	public static Item[] getItems(final Filter<Item> itemFilter) {
+		return getItems(false, itemFilter);
+	}
+
+	/**
+	 * Returns the items matching a set filter.
+	 *
+	 * @param cached     If true opens the inventory tab, if false it uses the last seen representation of the items
+	 * @param itemFilter The filter to compare against
+	 * @return The items matching the filter
+	 */
+	public static Item[] getItems(final boolean cached, final Filter<Item> itemFilter) {
 		final WidgetChild inventoryWidget = getWidget(cached);
 		if (inventoryWidget != null) {
 			final WidgetChild[] inventoryChildren = inventoryWidget.getChildren();
@@ -53,7 +74,10 @@ public class Inventory {
 				final List<Item> items = new LinkedList<Item>();
 				for (int i = 0; i < 28; ++i) {
 					if (inventoryChildren[i].getChildId() != -1) {
-						items.add(new Item(inventoryChildren[i]));
+						final Item inventoryItem = new Item(inventoryChildren[i]);
+						if (itemFilter.accept(inventoryItem)) {
+							items.add(new Item(inventoryChildren[i]));
+						}
 					}
 				}
 				return items.toArray(new Item[items.size()]);
@@ -64,6 +88,10 @@ public class Inventory {
 
 	public static int getCount() {
 		return getItems().length;
+	}
+
+	public static int getCount(final boolean countStack) {
+		return getCount(countStack, ALL_ITEMS_FILTER);
 	}
 
 	public static int getCount(final int id) {
@@ -86,6 +114,13 @@ public class Inventory {
 		});
 	}
 
+	/**
+	 * Gets the count of a set of items
+	 *
+	 * @param countStack Should the method count item stacks?
+	 * @param itemFilter The filter to compare against
+	 * @return The amount of items matching the filter
+	 */
 	public static int getCount(final boolean countStack, final Filter<Item> itemFilter) {
 		final Item[] items = getItems();
 		int count = 0;

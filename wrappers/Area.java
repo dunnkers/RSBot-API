@@ -89,7 +89,11 @@ public class Area {
 		return bounds.getBounds();
 	}
 
-	public boolean contains(final Tile tile) {
+    public int getPlane() {
+        return plane;
+    }
+
+    public boolean contains(final Tile tile) {
 		if (plane != -1 && tile.getPlane() != plane) {
 			throw new RuntimeException("area does not support 3d");
 		}

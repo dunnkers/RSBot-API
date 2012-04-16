@@ -80,6 +80,23 @@ public class NPCs {
 		});
 	}
 
+	public static NPC getNearest(final String... names) {
+		return getNearest(new Filter<NPC>() {
+			public boolean accept(final NPC npc) {
+				final String name = npc.getName();
+				if (name == null) {
+					return false;
+				}
+				for (final String n : names) {
+					if (n.toLowerCase().contains(name.toLowerCase())) {
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+	}
+
 	public static NPC getNearest(final Filter<NPC> filter) {
 		final Client client = Context.client();
 		final int[] indices = client.getRSNPCIndexArray();

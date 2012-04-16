@@ -6,7 +6,6 @@ package org.powerbot.game.api.util;
  * @author Timer
  */
 public class Time {
-	
 	/**
 	 * @param time The number of milliseconds to ensure sleeping for.
 	 */
@@ -21,14 +20,15 @@ public class Time {
 		} catch (final InterruptedException ignored) {
 		}
 	}
-	
+
 	/**
 	 * Sleeps for a random number of milliseconds.
-	 * @param the minimum sleep time.
-	 * @param the maximum sleep time.
+	 *
+	 * @param min the minimum sleep time.
+	 * @param max the maximum sleep time.
 	 */
-	public static void sleep(final int min, final int max) 
-		sleep(Random.nextInt(min, max + 1));
+	public static void sleep(final int min, final int max) {
+		sleep(Random.nextInt(min, max));
 	}
 
 	/**

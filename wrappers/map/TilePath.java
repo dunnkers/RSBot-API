@@ -56,7 +56,7 @@ public class TilePath extends Path {
 	 */
 	@Override
 	public boolean validate() {
-		return tiles.length > 0 && getNext() != null && !Players.getLocal().getLocation().equals(getEnd());
+		return tiles.length > 0 && getNext() != null && Calculations.distanceTo(getEnd()) > Math.sqrt(2);
 	}
 
 	/**

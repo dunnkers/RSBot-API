@@ -161,10 +161,8 @@ public class WidgetChild implements Entity, Identifiable {
 		if (parentId != -1) {
 			final WidgetChild child = Widgets.get(parentId >> 0x10, parentId & 0xffff);
 			final int horizontalScrollSize = child.getScrollableContentWidth(), verticalScrollSize = child.getScrollableContentHeight();
-			if (horizontalScrollSize != 0) {
+			if (horizontalScrollSize > 0 || verticalScrollSize > 0) {
 				x -= getHorizontalScrollPosition();
-			}
-			if (verticalScrollSize != 0) {
 				y -= getVerticalScrollPosition();
 			}
 		}

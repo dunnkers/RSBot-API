@@ -130,7 +130,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	}
 
 	public boolean validate() {
-		return getId() != -1;
+		return getId() != -1 && getDefinition() != null;
 	}
 
 	public Point getCentralPoint() {

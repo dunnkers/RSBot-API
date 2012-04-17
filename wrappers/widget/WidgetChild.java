@@ -161,9 +161,11 @@ public class WidgetChild implements Entity, Identifiable {
 		if (parentId != -1) {
 			final WidgetChild child = Widgets.get(parentId >> 0x10, parentId & 0xffff);
 			final int horizontalScrollSize = child.getScrollableContentWidth(), verticalScrollSize = child.getScrollableContentHeight();
-			if (horizontalScrollSize > 0 || verticalScrollSize > 0) {
-				x -= horizontalScrollSize;
-				y -= verticalScrollSize;
+			if (horizontalScrollSize != 0) {
+				x -= getHorizontalScrollPosition();
+			}
+			if (verticalScrollSize != 0) {
+				y -= getVerticalScrollPosition();
 			}
 		}
 		x += getRelativeX();
@@ -195,16 +197,19 @@ public class WidgetChild implements Entity, Identifiable {
 	}
 
 	public int getWidth() {
-		if (!isInScrollableArea()) {
-			return getHorizontalScrollThumbSize();
+		final int w = getHorizontalScrollThumbSize();
+		if (w > -1) {
+			return w;
 		}
+
 		final Object widget = getInternal();
 		return widget != null ? (((RSInterfaceWidth) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceWidth() * Context.multipliers().INTERFACE_WIDTH) - 4 : -1;
 	}
 
 	public int getHeight() {
-		if (!isInScrollableArea()) {
-			return getVerticalScrollThumbSize();
+		final int h = getVerticalScrollThumbSize();
+		if (h > -1) {
+			return h;
 		}
 		final Object widget = getInternal();
 		return widget != null ? (((RSInterfaceHeight) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHeight() * Context.multipliers().INTERFACE_HEIGHT) - 4 : -1;
@@ -332,7 +337,7 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public int getHorizontalScrollPosition() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceHorizontalScrollbarPosition) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHorizontalScrollbarPosition() * Context.multipliers().INTERFACE_HORIZONTALSCROLLBARSIZE : -1;
+		return widget != null ? ((RSInterfaceHorizontalScrollbarPosition) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHorizontalScrollbarPosition() * Context.multipliers().INTERFACE_HORIZONTALSCROLLBARTHUMBPOSITION : -1;
 	}
 
 	public int getScrollableContentWidth() {
@@ -347,7 +352,7 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public int getVerticalScrollPosition() {
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceVerticalScrollbarPosition) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceVerticalScrollbarPosition() * Context.multipliers().INTERFACE_VERTICALSCROLLBARSIZE : -1;
+		return widget != null ? ((RSInterfaceVerticalScrollbarPosition) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceVerticalScrollbarPosition() * Context.multipliers().INTERFACE_VERTICALSCROLLBARTHUMBPOSITION : -1;
 	}
 
 	public int getScrollableContentHeight() {

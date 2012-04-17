@@ -89,8 +89,8 @@ public class Widgets {
 	}
 
 	public static WidgetChild getChild(final int id) {
-		final int x = id >> 16;
-		final int y = id & 0xFFFF;
+		final int x = id >> 0x10;
+		final int y = id & 0xffff;
 		return get(x).getChild(y);
 	}
 

@@ -7,16 +7,15 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
-import org.powerbot.concurrent.TaskContainer;
+import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.bot.Context;
-import org.powerbot.game.bot.input.MouseManipulator;
+import org.powerbot.game.bot.handler.input.MouseReactor;
+import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.Client;
 
 /**
@@ -157,7 +156,7 @@ public class Mouse {
 	 * @param randomY The random y gaussian distribution.
 	 */
 	public static void hop(int x, int y, final int randomX, final int randomY) {
-		if (isOnCanvas(x, y)) {
+		if (Calculations.isOnScreen(x, y)) {
 			moveMouse(x + Random.nextGaussian(-randomX, randomX, randomX), y + Random.nextGaussian(-randomY, randomY, randomY));
 		}
 	}
@@ -210,35 +209,17 @@ public class Mouse {
 	 * @return <tt>true</tt> if we reached this position; otherwise <tt>false</tt>.
 	 */
 	public static boolean move(int x, int y, final int randomX, final int randomY) {
-		final TaskContainer container = Context.get().getContainer();
-		final MouseManipulator task = create(x, y, randomX, randomY, false, false);
-		final Future<?> future = container.submit(task);
-		if (future != null) {
-			try {
-				future.get();
-			} catch (final InterruptedException ignored) {
-			} catch (final ExecutionException ignored) {
-			}
-		}
-		return task.isAccepted();
+		final MouseReactor reactor = Context.resolve().getReactor();
+		return reactor.process(create(x, y, randomX, randomY, false, false));
 	}
 
 	public static boolean move(final Point p, final int randomX, final int randomY) {
 		return move(p.x, p.y, randomX, randomY);
 	}
 
-	public static boolean apply(final ViewportEntity locatable, final Filter<Point> filter) {
-		final TaskContainer container = Context.get().getContainer();
-		final MouseManipulator task = new MouseManipulator(locatable, filter);
-		final Future<?> future = container.submit(task);
-		if (future != null) {
-			try {
-				future.get();
-			} catch (final InterruptedException ignored) {
-			} catch (final ExecutionException ignored) {
-			}
-		}
-		return task.isAccepted();
+	public static boolean apply(final ViewportEntity viewportEntity, final Filter<Point> filter) {
+		final MouseReactor reactor = Context.resolve().getReactor();
+		return reactor.process(new MouseNode(viewportEntity, filter));
 	}
 
 	private static void pressMouse(final int x, final int y, final boolean left) {
@@ -269,12 +250,12 @@ public class Mouse {
 		}
 
 		if (!mouse.isPresent()) {
-			if (isOnCanvas(x, y)) {
+			if (Calculations.isOnScreen(x, y)) {
 				mouse.sendEvent(
 						new MouseEvent(target, MouseEvent.MOUSE_ENTERED, System.currentTimeMillis(), 0, x, y, 0, false)
 				);
 			}
-		} else if (!isOnCanvas(x, y)) {
+		} else if (!Calculations.isOnScreen(x, y)) {
 			mouse.sendEvent(
 					new MouseEvent(target, MouseEvent.MOUSE_EXITED, System.currentTimeMillis(), 0, x, y, 0, false)
 			);
@@ -374,19 +355,8 @@ public class Mouse {
 		sides.put(Thread.currentThread().getThreadGroup(), length);
 	}
 
-	/**
-	 * @param x The x location to check.
-	 * @param y The y location to check.
-	 * @return <tt>true</tt> if the given point is on the canvas; otherwise <tt>false</tt>.
-	 */
-	public static boolean isOnCanvas(final int x, final int y) {
-		final Context context = Context.get();
-		final Canvas canvas;
-		return !(context.getClient() == null || (canvas = context.getClient().getCanvas()) == null) && x >= 0 && x < canvas.getWidth() && y >= 0 && y < canvas.getHeight();
-	}
-
-	private static MouseManipulator create(final int x, final int y, final int randomX, final int randomY, final boolean click, final boolean left) {
-		return new MouseManipulator(
+	private static MouseNode create(final int x, final int y, final int randomX, final int randomY, final boolean click, final boolean left) {
+		return new MouseNode(
 				new ViewportEntity() {
 					private final Rectangle area = new Rectangle(x - randomX, y - randomY, randomX * 2, randomY * 2);
 
@@ -403,7 +373,7 @@ public class Mouse {
 					}
 
 					public boolean validate() {
-						return Mouse.isOnCanvas(x, y);
+						return Calculations.isOnScreen(x, y);
 					}
 				},
 				new Filter<Point>() {

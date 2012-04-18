@@ -34,6 +34,10 @@ public class NPCs {
 		return getLoaded(ALL_FILTER);
 	}
 
+	/**
+	 * @param ids NPC will be accepted if having one of these ID's.
+	 * @return An array of the currently loaded NPC's in the game that have one of the provided ID's.
+	 */
 	public static NPC[] getLoaded(final int... ids) {
 		return getLoaded(new Filter<NPC>() {
 			public boolean accept(final NPC npc) {
@@ -67,6 +71,10 @@ public class NPCs {
 		return npcs.toArray(new NPC[npcs.size()]);
 	}
 
+	/**
+	 * @param ids NPC will be accepted if having one of these ID's.
+	 * @return The nearest NPC with one of these ID's if any present, else <i>null</i>.
+	 */
 	public static NPC getNearest(final int... ids) {
 		return getNearest(new Filter<NPC>() {
 			public boolean accept(final NPC npc) {
@@ -80,6 +88,10 @@ public class NPCs {
 		});
 	}
 
+	/**
+	 * @param names NPC will be accepted if having one of these names.
+	 * @return The nearest NPC with one of these names if any present, else <i>null</i>.
+	 */
 	public static NPC getNearest(final String... names) {
 		return getNearest(new Filter<NPC>() {
 			public boolean accept(final NPC npc) {
@@ -97,6 +109,10 @@ public class NPCs {
 		});
 	}
 
+	/**
+	 * @param filter The filtering <code>Filter</code> NPC's have to pass.
+	 * @return The nearest NPC passing the filter if any present, else <i>null</i>.
+	 */
 	public static NPC getNearest(final Filter<NPC> filter) {
 		final Client client = Context.client();
 		final int[] indices = client.getRSNPCIndexArray();

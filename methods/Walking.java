@@ -131,12 +131,13 @@ public class Walking {
 		);
 	}
 
-	public static Tile getClosestOnMap(final Tile tile) {
+	public static Tile getClosestOnMap(Tile tile) {
 		if (tile.isOnMap()) {
 			return tile;
 		}
 
 		final Tile location = Players.getLocal().getLocation();
+		tile = tile.derive(-location.getX(), -location.getY());
 		final double angle = Math.atan2(tile.getY(), tile.getX());
 		return new Tile(
 				location.getX() + (int) (16d * Math.cos(angle)),
